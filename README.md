@@ -29,10 +29,7 @@ The full methods, results and discussion are written up in a final report: [`Dat
 ├── cnn_shape.ipynb                                       # Main notebook: data loading, model, training, evaluation
 ├── generate_simulations.py                               # Generate N-body simulations using DISCO-DJ
 ├── generate_labels_shape.py                              # Assign halo axis ratios to Lagrangian grid cells
-├── model_best_background_nosigmoid_nodropout_loss.pt     # Trained baseline model checkpoint
-├── model_best_masked_nosigmoid_nodropout.pt              # Trained masked model checkpoint
-├── model_overfitting.pt                                  # Single-simulation overfitting diagnostic checkpoint
-└── DataScience_final_Einramhof.pdf                       # Full written report
+└── DataScience_final_Einramhof.pdf                       # Final report
 ```
 
 ---
@@ -110,8 +107,7 @@ When background voxels are masked out to isolate halo shape prediction, the coll
 
 ## Data
 
-The full simulation dataset (110 simulations × 256³ particles) was generated and stored on a dedicated workstation and is not included here due to its size (~several hundred GB). The three model checkpoints are included and sufficient for inference and evaluation.
-
+The full simulation dataset (110 simulations × 256³ particles) was generated and stored on a university workstation and is not included here due to its size. 
 ---
 
 ## References
@@ -119,7 +115,6 @@ The full simulation dataset (110 simulations × 256³ particles) was generated a
 - Behroozi, P. S., Wechsler, R. H., & Wu, H.-Y. 2012, ApJ, 762, 109 — *ROCKSTAR halo finder*
 - Buisman, J., List, F., & Hahn, O. 2025 — *Differentiable Halo Mass Prediction and the Cosmology-Dependence of Halo Mass Functions*
 - Hahn, O., List, F., & Porqueres, N. 2024, JCAP, 2024, 063 — *DISCO-DJ*
-- Jonas, R. & Einramhof, L. 2026 — *Predicting structure formation and halo mass in cosmological simulations using a convolutional neural network*
 - Kingma, D. P. & Ba, J. 2017 — *Adam: A Method for Stochastic Optimization*
 - List, F. & Hahn, O. 2024, Journal of Computational Physics, 513, 113201
 - List, F., Hahn, O., Flöss, T., & Winkler, L. 2026, JCAP, 2026, 033 — *DISCO-DJ v2*
