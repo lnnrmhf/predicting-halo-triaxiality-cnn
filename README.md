@@ -23,18 +23,6 @@ The full methods, results and discussion are written up in a final report: [`Dat
 
 ---
 
-## Repository structure
-
-```
-.
-├── cnn_shape.ipynb                                       # Main notebook: data loading, model, training, evaluation
-├── generate_simulations.py                               # Generate N-body simulations using DISCO-DJ
-├── generate_labels_shape.py                              # Assign halo axis ratios to Lagrangian grid cells
-└── DataScience_final_Einramhof.pdf                       # Final report
-```
-
----
-
 ## Methods
 
 ### Generating simulations (`generate_simulations.py`)
