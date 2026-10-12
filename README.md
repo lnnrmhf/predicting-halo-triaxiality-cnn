@@ -1,6 +1,6 @@
 # Predicting Halo Triaxiality in Cosmological Simulations using a CNN
 
-**Course project — Data Science in Astrophysics**  
+**Final project — Course: Data Science in Astrophysics**  
 Institute for Astronomy (IfA), University of Vienna — July 2026
 
 Prof. Oliver Hahn & Ass.-Prof. Dr. Sudeshna Boro Saikia
@@ -71,6 +71,9 @@ Two model variants were trained:
 
 1. **Baseline** (`model_best_background_nosigmoid_nodropout_loss.pt`): standard MSE loss computed over all voxels; background voxels (originally NaN) were mapped to 0.0 during training.
 2. **Masked** (`model_best_masked_nosigmoid_nodropout.pt`): MSE loss computed over bound halo voxels only, to isolate shape prediction from collapse classification.
+
+[`cnn_architecture.pdf`](Jonas_Einramhof.pdf).
+
 
 ### Training
 
