@@ -18,7 +18,7 @@ While N-body simulations provide the ground truth for extracting halo geometries
 Training, validation and test datasets were constructed from cosmological N-body simulations generated with DISCO-DJ (Hahn et al. 2024; List & Hahn 2024), with halos and their axis ratios (*b/a* and *c/a*) identified using the ROCKSTAR halo finder (Behroozi et al. 2012). A 3D U-Net CNN was trained on normalized, augmented sub-volumes using a Mean Squared Error (MSE) loss function.
 
 <p align="center">
-  <img src="figures/cnn_architecture.png" width="450" title="4-level U-Net structure of the CNN">
+  <img src="figures/cnn_architecture.png" width="600" title="4-level U-Net structure of the CNN">
 </p>
 
 <p align="center">
@@ -29,7 +29,7 @@ Training, validation and test datasets were constructed from cosmological N-body
 While the model successfully identified collapsed regions on large scales, it failed to predict halo axis ratios accurately. Instead, predictions collapsed to the mean near halo centers with artificial, decreasing gradients toward halo boundaries, resulting in negative coefficient of determination values; R² = −2.45 for both axis ratios. Single-sample overfitting diagnostics confirmed that the network struggles to generalize geometric features across independent simulations. Furthermore, masking background voxels to isolate halo shapes caused predicted values to scatter tightly around the dataset mean, resulting in R² ≈ 0. The CNN under this configuration cannot extract physically meaningful halo axis ratios from initial density fields.
 
 <p align="center">
-  <img src="figures/cnn_background.png" width="450" title="Predictions for a slice of one test simulation. The first row shows the ground truth, the second row the predictions and the last row the absolute error between the two. The columns show the results for the axis ratios b/a, c/a and triaxiality T, respectively.">
+  <img src="figures/cnn_background.png" width="600" title="Predictions for a slice of one test simulation. The first row shows the ground truth, the second row the predictions and the last row the absolute error between the two. The columns show the results for the axis ratios b/a, c/a and triaxiality T, respectively.">
 </p>
 
 <p align="center">
