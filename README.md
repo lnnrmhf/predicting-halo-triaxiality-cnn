@@ -33,7 +33,7 @@ While the model successfully identified collapsed regions on large scales, it fa
 </p>
 
 <p align="center">
-  <em>Predictions for a slice of one test simulation. The first row shows the ground truth, the second row the predictions and the last row the absolute error between the two. The columns show the results for the axis ratios b/a, c/a and triaxiality T, respectively.</em>
+  <em>Predictions for a slice of one test simulation for the unmasked model. The first row shows the ground truth, the second row the predictions and the last row the absolute error between the two. The columns show the results for the axis ratios b/a, c/a and triaxiality T, respectively.</em>
 </p>
 
 
