@@ -108,7 +108,7 @@ When background voxels are masked out to isolate halo shape prediction, the coll
 
 ## Data
 
-The full simulation dataset (110 simulations × 256³ particles) was generated and stored on a university workstation and is not included here due to its size. 
+The full simulation dataset was generated and stored on a university workstation and is not included here due to its size. 
 ---
 
 ## References
@@ -127,5 +127,3 @@ The full simulation dataset (110 simulations × 256³ particles) was generated a
 Full bibliography in the accompanying paper.
 
 ---
-
-*This project was completed as part of the Data Science in Astrophysics course, University of Vienna, 2026.*
