@@ -2,6 +2,7 @@
 
 **Course project — Data Science in Astrophysics**  
 Institute for Astronomy (IfA), University of Vienna — July 2026
+
 Prof. Oliver Hahn & Ass.-Prof. Dr. Sudeshna Boro Saikia
 
 ---
