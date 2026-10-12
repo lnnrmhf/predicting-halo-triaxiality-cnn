@@ -2,15 +2,13 @@
 
 **Course project — Data Science in Astrophysics**  
 Institute for Astronomy (IfA), University of Vienna — July 2026
-
-*L. Einramhof & R. Jonas*  
-Supervised by Prof. Oliver Hahn & Ass.-Prof. Dr. Sudeshna Boro Saikia
+Prof. Oliver Hahn & Ass.-Prof. Dr. Sudeshna Boro Saikia
 
 ---
 
 ## Overview
 
-The aim of this work is to predict dark matter halo geometry directly from the initial linear density field in N-body simulations using a 3D convolutional neural network (CNN).
+The aim of this work is to predict dark matter halo geometry directly from the initial linear density field in N-body simulations using a 3D convolutional neural network (CNN). This work is part of a larger project, where Raffael Jonas investigates the prediction of structural collapse and the halo mass function. 
 
 N-body simulations have demonstrated that dark matter halos formed through gravitational collapse are non-spherical, showing shapes that depend on halo mass, assembly history and cosmic environment. Determining halo geometries accurately is essential because halo shapes directly influence key physical properties and observations, such as subhalo orbital dynamics, spatial anisotropies in satellite galaxy distributions, two-point correlation functions, weak gravitational lensing signals and more. Mapping the origin and distribution of halo shapes therefore provides crucial insights into the non-linear growth of cosmic structure and is vital for accurate cosmological parameter inference.
 
@@ -20,9 +18,7 @@ Training, validation and test datasets were constructed from cosmological N-body
 
 While the model successfully identified collapsed regions on large scales, it failed to predict halo axis ratios accurately. Instead, predictions collapsed to the mean near halo centers with artificial, decreasing gradients toward halo boundaries, resulting in negative coefficient of determination values; R² = −2.45 for both axis ratios. Single-sample overfitting diagnostics confirmed that the network struggles to generalize geometric features across independent simulations. Furthermore, masking background voxels to isolate halo shapes caused predicted values to scatter tightly around the dataset mean, resulting in R² ≈ 0. The CNN under this configuration cannot extract physically meaningful halo axis ratios from initial density fields.
 
-The full methods, results and discussion are written up in a paper formatted for A&A: [`DataScience_final_Einramhof.pdf`](DataScience_final_Einramhof.pdf).
-
-This work is part of a larger project predicting halo properties from the initial density field. While Jonas & Einramhof (2026) investigates the prediction of structural collapse and the halo mass function, this analysis focuses on halo axis ratios.
+The full methods, results and discussion are written up in a final report: [`DataScience_final_Einramhof.pdf`](DataScience_final_Einramhof.pdf).
 
 ---
 
@@ -67,6 +63,8 @@ Since a full volume box consists of 256³ particles, which quickly exceed the co
 
 ### CNN architecture
 
+The CNN used in this work is heavily based on Raffael Jonas` CNN for halo mass predictions. 
+
 The formation and final geometry of a halo are determined by many factors that span large physical scales; the architecture must therefore reflect this multiscale influence. A 4-level 3D U-Net (also called a V-Net in 3D) was implemented in PyTorch (Ronneberger et al. 2015). In the encoder, the initial density field is compressed in physical size at each layer while the feature depth increases (32 → 64 → 128 → 256 channels), starting from a sub-volume of 80³ particles. The maximum compression is achieved in the bottleneck, where the 3 × 3 × 3 convolutional kernel spans a physical scale of 9.375 Mpc/h. In the decoder, skip connections concatenate information from each encoder level with the up-sampled output of the layer below, allowing the subsequent convolution to draw on both coarse abstract features from the bottleneck and fine spatial detail preserved by the skip connection. The final 1 × 1 × 1 convolution maps the abstract features down to two output channels, corresponding to the spatial distributions of *b/a* and *c/a*, respectively.
 
 At each layer, convolution was performed with `Conv3d` using a 3 × 3 × 3 filter and circular padding, motivated by the periodic boundary conditions of the simulations. `LeakyReLU(0.05)` was used as the activation function. Importantly, even though axis ratios are physically bounded between 0 and 1, the final layer uses a linear output rather than a restricted activation function — adding a bounded activation function caused the network to stop learning very early in the training process, as these functions cause gradients to vanish quickly near the boundaries. Through trial and error, the dropout rate was also set to zero for the final network.
@@ -90,7 +88,7 @@ The high TPR of 0.976 indicates that halo structures are overall successfully id
 
 | Metric | This work | Buisman et al. (2025) | López-Cano et al. (2024) |
 |--------|-----------|----------------------|--------------------------|
-| TPR    | **0.976** | 0.732                | 0.838                    |
+| TPR    | 0.976     | 0.732                | 0.838                    |
 | TNR    | 0.736     | 0.956                | 0.883                    |
 | PPV    | 0.524     | 0.822                | 0.838                    |
 | ACC    | 0.791     | 0.907                | 0.864                    |
@@ -107,65 +105,6 @@ The model fails to reproduce the optimal diagonal relation between predicted and
 | Single-simulation overfit | ~0.9 | ~0.9 | ~0.87 |
 
 When background voxels are masked out to isolate halo shape prediction, the collapse toward the mean becomes even more pronounced — predictions collapse into narrow, horizontal bands that fail to track the ideal fit, quantitatively confirming an absence of correlation. This indicates that the network remains unable to extract genuine structural information even when constrained to halo voxels exclusively.
-
----
-
-## Running the code
-
-### Requirements
-
-```bash
-pip install torch numpy scipy pandas matplotlib scikit-learn
-```
-
-For simulation generation, [DISCO-DJ](https://github.com/ohahn/DISCO-DJ) and JAX are required:
-
-```bash
-pip install jax jaxlib
-pip install discodj
-```
-
-ROCKSTAR must be compiled separately — see the [ROCKSTAR repository](https://bitbucket.org/gfcstanford/rockstar).
-
-### Generating simulations
-
-```bash
-python generate_simulations.py \
-    --n_samples 10 \
-    --res 256 \
-    --boxsize 100.0 \
-    --start_idx 0
-```
-
-A GPU is strongly recommended; the original training used an NVIDIA RTX 3090 with 24 GB of VRAM.
-
-### Generating labels
-
-After running ROCKSTAR on the particle `.ascii` output files:
-
-```bash
-python generate_labels_shape.py \
-    --simulation_number 0 \
-    --res 256 \
-    --boxsize 100.0
-```
-
-This saves `label_ba_{i}.npy` and `label_ca_{i}.npy` for each simulation.
-
-### Loading a trained model for inference
-
-The three `.pt` checkpoint files contain trained model weights and loss histories and are self-contained for inference. Update the data paths at the top of `cnn_shape.ipynb` to point to your simulation directories, then follow the notebook cells in order. To load a checkpoint directly:
-
-```python
-import torch
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
-# define VNetShape as in the notebook, then:
-checkpoint = torch.load("model_best_masked_nosigmoid_nodropout.pt", map_location=device)
-model.load_state_dict(checkpoint["state_dict"])
-model.eval()
-```
 
 ---
 
