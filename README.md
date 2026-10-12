@@ -72,7 +72,7 @@ Two model variants were trained:
 1. **Baseline** (`model_best_background_nosigmoid_nodropout_loss.pt`): standard MSE loss computed over all voxels; background voxels (originally NaN) were mapped to 0.0 during training.
 2. **Masked** (`model_best_masked_nosigmoid_nodropout.pt`): MSE loss computed over bound halo voxels only, to isolate shape prediction from collapse classification.
 
-[`cnn_architecture.pdf`](Jonas_Einramhof.pdf).
+[`cnn_architecture.pdf`](figures/Jonas_Einramhof.pdf).
 
 
 ### Training
